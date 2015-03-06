@@ -27,25 +27,20 @@ package org.spongepowered.mod.text.format;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import net.minecraft.util.EnumChatFormatting;
-import org.spongepowered.api.text.format.TextColor;
+import org.spongepowered.api.text.format.TextStyle;
 import org.spongepowered.api.util.annotation.NonnullByDefault;
-import org.spongepowered.mod.registry.SpongeGameRegistry;
 
-import java.awt.Color;
+import javax.annotation.Nullable;
 
 @NonnullByDefault
-public class SpongeTextColor implements TextColor.Base {
+public class SpongeTextStyle extends TextStyle.Base {
 
     private final EnumChatFormatting handle;
-    private final Color color;
 
-    public SpongeTextColor(EnumChatFormatting handle, Color color) {
+    SpongeTextStyle(EnumChatFormatting handle, @Nullable Boolean bold, @Nullable Boolean italic, @Nullable Boolean underline,
+            @Nullable Boolean strikethrough, @Nullable Boolean obfuscated) {
+        super(bold, italic, underline, strikethrough, obfuscated);
         this.handle = checkNotNull(handle, "handle");
-        this.color = checkNotNull(color, "color");
-    }
-
-    public EnumChatFormatting getHandle() {
-        return this.handle;
     }
 
     @Override
@@ -54,22 +49,27 @@ public class SpongeTextColor implements TextColor.Base {
     }
 
     @Override
-    public Color getColor() {
-        return this.color;
-    }
-
-    @Override @Deprecated
     public char getCode() {
         return this.handle.formattingCode;
     }
 
-    @Override
-    public String toString() {
-        return getName();
+    public static SpongeTextStyle of(EnumChatFormatting handle) {
+        if (handle == EnumChatFormatting.RESET) {
+            return new SpongeTextStyle(handle, false, false, false, false, false);
+        }
+
+        return new SpongeTextStyle(handle,
+                equalsOrNull(handle, EnumChatFormatting.BOLD),
+                equalsOrNull(handle, EnumChatFormatting.ITALIC),
+                equalsOrNull(handle, EnumChatFormatting.UNDERLINE),
+                equalsOrNull(handle, EnumChatFormatting.STRIKETHROUGH),
+                equalsOrNull(handle, EnumChatFormatting.OBFUSCATED)
+        );
     }
 
-    public static SpongeTextColor of(EnumChatFormatting color) {
-        return SpongeGameRegistry.enumChatColor.get(color);
+    @Nullable
+    private static Boolean equalsOrNull(EnumChatFormatting handle, EnumChatFormatting check) {
+        return handle == check ? true : null;
     }
 
 }

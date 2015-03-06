@@ -22,26 +22,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.mod.entity;
+package org.spongepowered.mod.text;
 
-import org.spongepowered.api.entity.living.villager.Profession;
-import org.spongepowered.api.text.translation.Translation;
-import org.spongepowered.api.util.annotation.NonnullByDefault;
+import net.minecraft.util.IChatComponent;
 
-@NonnullByDefault
-public class SpongeProfession extends SpongeEntityMeta implements Profession {
+public interface SpongeText {
 
-    public SpongeProfession(int id, String name) {
-        super(id, name);
-    }
+    char COLOR_CHAR = '§';
 
-    @Override
-    public String getName() {
-        return this.name;
-    }
+    IChatComponent toComponent();
 
-    @Override
-    public Translation getTranslation() {
-        return null;
-    }
+    String toPlain();
+
+    String toJson();
+
+    String toLegacy(char code);
+
 }

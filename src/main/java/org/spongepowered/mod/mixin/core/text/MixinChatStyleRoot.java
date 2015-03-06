@@ -22,26 +22,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.mod.entity;
+package org.spongepowered.mod.mixin.core.text;
 
-import org.spongepowered.api.entity.living.villager.Profession;
-import org.spongepowered.api.text.translation.Translation;
-import org.spongepowered.api.util.annotation.NonnullByDefault;
+import net.minecraft.util.ChatStyle;
+import org.apache.commons.lang3.ArrayUtils;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.mod.text.SpongeChatStyle;
 
-@NonnullByDefault
-public class SpongeProfession extends SpongeEntityMeta implements Profession {
-
-    public SpongeProfession(int id, String name) {
-        super(id, name);
-    }
+@Mixin(targets = "net/minecraft/util/ChatStyle$1")
+public abstract class MixinChatStyleRoot extends ChatStyle implements SpongeChatStyle {
 
     @Override
-    public String getName() {
-        return this.name;
+    public char[] asFormattingCode() {
+        return ArrayUtils.EMPTY_CHAR_ARRAY;
     }
 
-    @Override
-    public Translation getTranslation() {
-        return null;
-    }
 }

@@ -22,26 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.mod.entity;
+package org.spongepowered.mod.mixin.api.text;
 
-import org.spongepowered.api.entity.living.villager.Profession;
-import org.spongepowered.api.text.translation.Translation;
-import org.spongepowered.api.util.annotation.NonnullByDefault;
+import net.minecraft.util.ChatComponentSelector;
+import net.minecraft.util.ChatComponentStyle;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
-@NonnullByDefault
-public class SpongeProfession extends SpongeEntityMeta implements Profession {
+@Mixin(value = Text.Selector.class, remap = false)
+public abstract class MixinTextSelector extends MixinText {
 
-    public SpongeProfession(int id, String name) {
-        super(id, name);
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
+    @Shadow protected org.spongepowered.api.text.selector.Selector selector;
 
     @Override
-    public Translation getTranslation() {
-        return null;
+    protected ChatComponentStyle createComponent() {
+        return new ChatComponentSelector(this.selector.toPlain());
     }
 }

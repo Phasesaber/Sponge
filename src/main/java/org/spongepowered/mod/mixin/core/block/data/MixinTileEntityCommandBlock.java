@@ -27,14 +27,16 @@ package org.spongepowered.mod.mixin.core.block.data;
 import com.google.common.base.Optional;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IChatComponent;
 import org.spongepowered.api.block.data.CommandBlock;
-import org.spongepowered.api.text.message.Message;
+import org.spongepowered.api.text.Text;
 import org.spongepowered.api.util.annotation.NonnullByDefault;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.mod.text.message.SpongeMessage;
+import org.spongepowered.mod.text.SpongeChatComponent;
+import org.spongepowered.mod.text.SpongeText;
 
 @NonnullByDefault
 @Implements(@Interface(iface = CommandBlock.class, prefix = "command$"))
@@ -68,12 +70,17 @@ public abstract class MixinTileEntityCommandBlock extends TileEntity {
         getCommandBlockLogic().setTrackOutput(track);
     }
 
-    public Optional<Message> command$getLastOutput() {
-        return Optional.fromNullable(SpongeMessage.of(getCommandBlockLogic().getLastOutput()));
+    public Optional<Text> command$getLastOutput() {
+        IChatComponent output = getCommandBlockLogic().getLastOutput();
+        if (output != null) {
+            return Optional.of(((SpongeChatComponent) output).toText());
+        }
+
+        return Optional.absent();
     }
 
-    public void command$setLastOutput(Message message) {
-        getCommandBlockLogic().setLastOutput(((SpongeMessage) message).getHandle());
+    public void command$setLastOutput(Text message) {
+        getCommandBlockLogic().setLastOutput(((SpongeText) message).toComponent());
     }
 
     void command$execute() {

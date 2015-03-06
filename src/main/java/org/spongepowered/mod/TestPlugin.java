@@ -22,26 +22,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.mod.entity;
+package org.spongepowered.mod;
 
-import org.spongepowered.api.entity.living.villager.Profession;
-import org.spongepowered.api.text.translation.Translation;
-import org.spongepowered.api.util.annotation.NonnullByDefault;
+import org.spongepowered.api.event.entity.living.player.PlayerChatEvent;
+import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.text.Texts;
+import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.format.TextStyles;
+import org.spongepowered.api.util.event.Subscribe;
 
-@NonnullByDefault
-public class SpongeProfession extends SpongeEntityMeta implements Profession {
+@Plugin(id = "testplugin", name = "TestPlugin")
+public class TestPlugin {
 
-    public SpongeProfession(int id, String name) {
-        super(id, name);
+    @Subscribe
+    public void onPlayerChat(PlayerChatEvent event) {
+        event.getPlayer().sendMessage(Texts.of("Hello! ", 1, "How are you today?", null, TextColors.GREEN, TextStyles.BOLD, ":D", "trolol"));
     }
 
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public Translation getTranslation() {
-        return null;
-    }
 }

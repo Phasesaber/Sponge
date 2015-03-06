@@ -22,26 +22,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.spongepowered.mod.entity;
+package org.spongepowered.mod.text;
 
-import org.spongepowered.api.entity.living.villager.Profession;
-import org.spongepowered.api.text.translation.Translation;
-import org.spongepowered.api.util.annotation.NonnullByDefault;
+import org.spongepowered.api.text.action.HoverAction;
 
-@NonnullByDefault
-public class SpongeProfession extends SpongeEntityMeta implements Profession {
+public interface SpongeHoverEvent {
 
-    public SpongeProfession(int id, String name) {
-        super(id, name);
-    }
+    HoverAction<?> getHandle();
 
-    @Override
-    public String getName() {
-        return this.name;
-    }
+    void setHandle(HoverAction<?> handle);
 
-    @Override
-    public Translation getTranslation() {
-        return null;
-    }
 }
